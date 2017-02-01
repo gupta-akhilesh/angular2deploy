@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { PlayerService } from './services/player.service';
 import { BasketballPlayer } from './models/player';
 
 @Component({
@@ -6,15 +8,17 @@ import { BasketballPlayer } from './models/player';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   isNewForm: boolean;
   showForm: boolean;
   formPlayer: BasketballPlayer;
-  players = [
-    new BasketballPlayer("Lebron", "James", "Captain of the Cavaliers and a 3 time champion."),
-    new BasketballPlayer("Kyrie", "Irving", "One of the best ball handlers and scorers in the NBA."),
-    new BasketballPlayer("Kevin", "Love", "A three point threat and a rebounding machine."),
-  ];
+  players: BasketballPlayer[];
+
+  constructor(private playerService: PlayerService) { }
+
+  ngOnInit() {
+    this.playerService.getPlayers().then(players => this.players = players);
+  }
 
   showPlayerForm(player: BasketballPlayer) {
     if(!player) {
@@ -27,17 +31,16 @@ export class AppComponent {
   }
 
   removePlayer(player: BasketballPlayer) {
-    var index = this.players.indexOf(player, 0);
-
-    if (index > -1) {
-       this.players.splice(index, 1);
-    }
+    this.playerService.removePlayer(player);
   }
 
   savePlayer(player: BasketballPlayer) {
     if(player) {
       if(this.isNewForm) {
-        this.players.push(player);
+        this.playerService.insertPlayer(player);
+      }
+      else {
+        this.playerService.updatePlayer(player);
       }
 
       this.showForm = false;
