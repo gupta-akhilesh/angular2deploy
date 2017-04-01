@@ -14,7 +14,7 @@ export class PlayerService {
         ];
 
         return new Promise(resolve => {
-            setTimeout(() => resolve(this.players), 2000);
+            setTimeout(() => resolve(this.players), 500);
         });
     }
 
@@ -23,7 +23,7 @@ export class PlayerService {
             setTimeout(() => {
                 this.players.push(player);
                 resolve();
-            }, 2000);
+            }, 500);
         });
     }
 
@@ -32,7 +32,7 @@ export class PlayerService {
             setTimeout(() => {
                 // Nothing to do, as the player is already updated in
                 // the collection right now.
-            }, 2000);
+            },500);
         });
     }
 
@@ -44,7 +44,7 @@ export class PlayerService {
                 if (index > -1) {
                     this.players.splice(index, 1);
                 }
-            }, 2000);
+            }, 500);
         });
     }
 }
